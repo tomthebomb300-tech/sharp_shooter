@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <windows.h>
-#include <GL/gl.h>
+
+#include "update.h"
+#include "render.h"
 
 const char WINDOW_CLASS_NAME[] = "window";
 HDC CLIENT_AREA_HANDLE;
@@ -71,7 +73,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     UpdateWindow(hwnd);
 
     CLIENT_AREA_HANDLE = GetDC(hwnd);
-
+    setupGraphics(CLIENT_AREA_HANDLE);
+    
     int run = 1;
     while(run){
         //The Message Loop
@@ -81,6 +84,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             TranslateMessage(&Msg);
             DispatchMessage(&Msg);
         }
+        update();
+        render(CLIENT_AREA_HANDLE);
     }
     return Msg.wParam;
 }
