@@ -3,5 +3,5 @@
 #include "update.h"
 
 void update(){
-    printf("Update Called\n");
+    // printf("Update Called\n");
 }
