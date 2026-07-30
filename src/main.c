@@ -3,6 +3,7 @@
 
 #include "update.h"
 #include "render.h"
+#include "types.h"
 
 const char WINDOW_CLASS_NAME[] = "window";
 HDC CLIENT_AREA_HANDLE;

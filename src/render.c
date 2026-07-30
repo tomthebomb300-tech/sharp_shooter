@@ -1,67 +1,86 @@
 #include <GL/gl.h>
 
 #include "render.h"
+#include "types.h"
+
+
+void drawCube(Cube cube){
+    Coordinates c = cube.coordinates;
+    Dimensions d = cube.dimensions;
+    Colour colour = cube.colour;
+
+    glRotatef(0.005f, 1,1,0);
+
+    //Front Face
+    glBegin(GL_POLYGON);
+    glColor3f(colour.red, colour.green, colour.blue);
+    glVertex3f(c.x,         c.y,            c.z);   //LBF
+    glVertex3f(c.x+d.width, c.y,            c.z);   //RBF
+    glVertex3f(c.x+d.width, c.y+d.height,   c.z);   //RTF
+    glVertex3f(c.x,         c.y+d.height,   c.z);   //LTF
+    glEnd();
+    
+    //Back Face
+    glBegin(GL_POLYGON);
+    glColor3f(colour.red, colour.green, colour.blue);
+    glVertex3f(c.x,         c.y,            c.z-d.depth);   //LBB
+    glVertex3f(c.x+d.width, c.y,            c.z-d.depth);   //RBB
+    glVertex3f(c.x+d.width, c.y+d.height,   c.z-d.depth);   //RTB
+    glVertex3f(c.x,         c.y+d.height,   c.z-d.depth);   //LTB
+    glEnd();
+
+    //Right Face
+    glBegin(GL_POLYGON);
+    glColor3f(colour.red, colour.green, colour.blue);
+    glVertex3f(c.x+d.width,     c.y,            c.z);           //RBF
+    glVertex3f(c.x+d.width,     c.y,            c.z-d.depth);   //RBB
+    glVertex3f(c.x+d.width,     c.y+d.height,   c.z-d.depth);   //RTB
+    glVertex3f(c.x+d.width,     c.y+d.height,   c.z);           //RTF
+    glEnd();
+
+    //Left Face
+    glBegin(GL_POLYGON);
+    glColor3f(colour.red, colour.green, colour.blue);
+    glVertex3f(c.x,     c.y,            c.z);           //LBF
+    glVertex3f(c.x,     c.y,            c.z-d.depth);   //LBB
+    glVertex3f(c.x,     c.y+d.height,   c.z-d.depth);   //LTB
+    glVertex3f(c.x,     c.y+d.height,   c.z);           //LTF
+    glEnd();
+
+    //Top Face
+    glBegin(GL_POLYGON);
+    glColor3f(colour.red, colour.green, colour.blue);
+    glVertex3f(c.x,             c.y+d.height,   c.z);           //LTF
+    glVertex3f(c.x+d.width,     c.y+d.height,   c.z);           //RTF
+    glVertex3f(c.x+d.width,     c.y+d.height,   c.z-d.depth);   //RTB
+    glVertex3f(c.x,             c.y+d.height,   c.z-d.depth);   //LTB
+    glEnd();
+
+    //Bottom Face
+    glBegin(GL_POLYGON);
+    glColor3f(colour.red, colour.green, colour.blue);
+    glVertex3f(c.x,             c.y,   c.z);           //LBF
+    glVertex3f(c.x+d.width,     c.y,   c.z);           //RBF
+    glVertex3f(c.x+d.width,     c.y,   c.z-d.depth);   //RBB
+    glVertex3f(c.x,             c.y,   c.z-d.depth);   //LBB
+    glEnd();
+}
+
+void drawMap(){
+    Cube cube = {
+        .coordinates = (Coordinates){0.0f, 0.0f, 0.0f},
+        .dimensions = (Dimensions){0.25f, 0.25f, 0.25f},
+        .colour = (Colour){1.0f, 0.0f, 0.0f}
+    };    
+    drawCube(cube);
+}
 
 void render(HDC CLIENT_AREA_HANDLE){
     glEnable(GL_DEPTH_TEST);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glRotatef(0.005f, 1.0f, 1.0f, 0.0f);
-
-    //Back Face Cube
-    glBegin(GL_POLYGON);
-    glColor3f(1.0f, 0.0f, 0.0f); //RED
-    glVertex3f(0.5f, 0.5f, -0.5f);//TR
-    glVertex3f(-0.5f, 0.5f, -0.5f);//TL
-    glVertex3f(-0.5f, -0.5f, -0.5f);//BL
-    glVertex3f(0.5f, -0.5f, -0.5f);//BR
-    glEnd();
-
-    //Front Face Cube
-    glBegin(GL_POLYGON);
-    glVertex3f(0.5f, 0.5f, 0.5f);
-    glVertex3f(-0.5f, 0.5f, 0.5f);
-    glVertex3f(-0.5f, -0.5f, 0.5f);
-    glVertex3f(0.5f, -0.5f, 0.5f);
-    glEnd();
-
-    //Left Face Cube
-    glBegin(GL_POLYGON);
-    glColor3f(0.0f, 1.0f, 0.0f); //GREEN
-    glVertex3f(-0.5f, 0.5f, 0.5f);//TLF
-    glVertex3f(-0.5f, -0.5f, 0.5f);//BLF
-    glVertex3f(-0.5f, -0.5f, -0.5f);//BLB
-    glVertex3f(-0.5f, 0.5f, -0.5f);//TLB
-    glEnd();
-
-    //Right Face Cube
-    glBegin(GL_POLYGON);
-    glVertex3f(0.5f, 0.5f, 0.5f);//TRF
-    glVertex3f(0.5f, -0.5f, 0.5f);//BRF
-    glVertex3f(0.5f, -0.5f, -0.5f);//BRB
-    glVertex3f(0.5f, 0.5f, -0.5f);//TRB
-    glEnd();
-
-    //Top Face Cube
-    glBegin(GL_POLYGON);
-    glColor3f(1.0f, 0.6f, 1.0f); //PINK
-    glVertex3f(0.5f, 0.5f, 0.5f);//TRF
-    glVertex3f(-0.5f, 0.5f, 0.5f);//TLF
-    glVertex3f(-0.5f, 0.5f, -0.5f);//TLB
-    glVertex3f(0.5f, 0.5f, -0.5f);//TRB
-    glEnd();
-
-    //Bottom Face Cube
-    glBegin(GL_POLYGON);
-    glVertex3f(0.5f, -0.5f, 0.5f);//BRF
-    glVertex3f(-0.5f, -0.5f, 0.5f);//BLF
-    glVertex3f(-0.5f, -0.5f, -0.5f);//BLB
-    glVertex3f(0.5f, -0.5f, -0.5f);//BRB
-    glEnd();
-
-
-
-
     glFlush();
+
+    drawMap();
 
     SwapBuffers(CLIENT_AREA_HANDLE);
 }
