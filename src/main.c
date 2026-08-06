@@ -7,14 +7,51 @@
 
 const char WINDOW_CLASS_NAME[] = "window";
 HDC CLIENT_AREA_HANDLE;
+Game *game;
 
 const int CLIENT_AREA_HEIGHT = 800;
 const int CLIENT_AREA_WIDTH = 800;
 const int WINDOW_HEIGHT = CLIENT_AREA_HEIGHT + 20;
 const int WINDOW_WIDTH = CLIENT_AREA_WIDTH + 43;
 
+void setup(){
+    game = malloc(sizeof(Game));
+
+    game->key_down[KEY_W] = 0;
+    game->key_down[KEY_A] = 0;
+    game->key_down[KEY_S] = 0;
+    game->key_down[KEY_D] = 0;
+
+    game->gameState = GAME_STATE_PLAYING;
+
+    //Camera
+    Coordinates c = {0.0f, 0.0f, 0.0f};
+    Camera camera = {.coordinates = c, .speed = 0.0005f};
+    game->camera = camera;
+}
+
+void keyDown(WPARAM key){
+    if(key == 'W'){game->key_down[0] = 1;}
+    else if(key == 'A'){game->key_down[KEY_A] = 1;}
+    else if(key == 'S'){game->key_down[KEY_S] = 1;}
+    else if(key == 'D'){game->key_down[KEY_D] = 1;}
+}
+
+void keyUp(WPARAM key){
+    if(key == 'W'){game->key_down[KEY_W] = 0;}
+    else if(key == 'A'){game->key_down[KEY_A] = 0;}
+    else if(key == 'S'){game->key_down[KEY_S] = 0;}
+    else if(key == 'D'){game->key_down[KEY_D] = 0;}
+}
+
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam){
     switch(msg){
+        case WM_KEYDOWN:
+            keyDown(wParam);
+        break;
+        case WM_KEYUP:
+            keyUp(wParam);
+        break;
         case WM_CLOSE:
             DestroyWindow(hwnd);
             break;
@@ -73,6 +110,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     ShowWindow(hwnd, nCmdShow);
     UpdateWindow(hwnd);
 
+    setup();
+
     CLIENT_AREA_HANDLE = GetDC(hwnd);
     setupGraphics(CLIENT_AREA_HANDLE);
     
@@ -85,8 +124,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             TranslateMessage(&Msg);
             DispatchMessage(&Msg);
         }
-        update();
-        render(CLIENT_AREA_HANDLE);
+        update(game);
+        render(CLIENT_AREA_HANDLE, game);
     }
     return Msg.wParam;
 }

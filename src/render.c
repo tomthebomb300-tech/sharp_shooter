@@ -9,7 +9,7 @@ void drawCube(Cube cube){
     Dimensions d = cube.dimensions;
     Colour colour = cube.colour;
 
-    glRotatef(0.005f, 1,1,0);
+    // glRotatef(0.005f, 1,1,0);
 
     //Front Face
     glBegin(GL_POLYGON);
@@ -69,17 +69,23 @@ void drawCube(Cube cube){
 void drawMap(){
     Cube cube = {
         .coordinates = (Coordinates){0.0f, 0.0f, 0.0f},
-        .dimensions = (Dimensions){0.25f, 0.25f, 0.25f},
+        .dimensions = (Dimensions){0.25f, 0.5f, 0.25f},
         .colour = (Colour){1.0f, 0.0f, 0.0f}
     };    
     drawCube(cube);
 }
 
-void render(HDC CLIENT_AREA_HANDLE){
+void render(HDC CLIENT_AREA_HANDLE, Game *game){
     glEnable(GL_DEPTH_TEST);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glFlush();
 
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    Coordinates c = game->camera.coordinates;
+    glTranslatef(-c.x,-c.y,-c.z);
+
+    glTranslatef(0.0f,0.0f,0.0f);
     drawMap();
 
     SwapBuffers(CLIENT_AREA_HANDLE);

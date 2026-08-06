@@ -7,6 +7,13 @@ typedef enum GAMESTATE{
     GAME_STATE_OVER
 } GAMESTATE;
 
+typedef enum key{
+    KEY_W,
+    KEY_A,
+    KEY_S,
+    KEY_D
+} KEY;
+
 typedef struct Coordinates{
     float x;
     float y;
@@ -31,8 +38,15 @@ typedef struct Cube{
     Colour colour;
 } Cube;
 
+typedef struct Camera{
+    Coordinates coordinates;
+    float speed;
+} Camera;
+
 typedef struct Game{
     GAMESTATE gameState;
+    Camera camera;
+    int key_down[4];
 }Game;
 
 #endif

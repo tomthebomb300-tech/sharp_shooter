@@ -7,7 +7,7 @@
 
 void drawCube(Cube cube);
 void drawMap();
-void render(HDC CLIENT_AREA_HANDLE);
+void render(HDC CLIENT_AREA_HANDLE, Game *game);
 void setupGraphics(HDC CLIENT_AREA_HANDLE);
 
 #endif
