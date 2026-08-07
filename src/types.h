@@ -40,6 +40,10 @@ typedef struct Cube{
 
 typedef struct Camera{
     Coordinates coordinates;
+    float FOV;
+    float aspectRatio;
+    float zNear;
+    float zFar;
     float speed;
 } Camera;
 

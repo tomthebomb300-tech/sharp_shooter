@@ -14,7 +14,7 @@ const int CLIENT_AREA_WIDTH = 800;
 const int WINDOW_HEIGHT = CLIENT_AREA_HEIGHT + 20;
 const int WINDOW_WIDTH = CLIENT_AREA_WIDTH + 43;
 
-void setup(){
+void setupGame(){
     game = malloc(sizeof(Game));
 
     game->key_down[KEY_W] = 0;
@@ -25,8 +25,15 @@ void setup(){
     game->gameState = GAME_STATE_PLAYING;
 
     //Camera
-    Coordinates c = {0.0f, 0.0f, 0.0f};
-    Camera camera = {.coordinates = c, .speed = 0.0005f};
+    Coordinates c = {0.0f, 0.25f, 0.0f};
+    Camera camera = {
+        .coordinates = c,
+        .FOV = 60.0f,
+        .aspectRatio = CLIENT_AREA_HEIGHT/CLIENT_AREA_WIDTH, 
+        .zNear = 0.1f,
+        .zFar = 100.0f,
+        .speed = 0.0005f
+    };
     game->camera = camera;
 }
 
@@ -110,7 +117,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     ShowWindow(hwnd, nCmdShow);
     UpdateWindow(hwnd);
 
-    setup();
+    setupGame();
 
     CLIENT_AREA_HANDLE = GetDC(hwnd);
     setupGraphics(CLIENT_AREA_HANDLE);

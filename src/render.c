@@ -1,4 +1,6 @@
 #include <GL/gl.h>
+#include <GL/glu.h>
+#include <stdio.h>
 
 #include "render.h"
 #include "types.h"
@@ -8,8 +10,6 @@ void drawCube(Cube cube){
     Coordinates c = cube.coordinates;
     Dimensions d = cube.dimensions;
     Colour colour = cube.colour;
-
-    // glRotatef(0.005f, 1,1,0);
 
     //Front Face
     glBegin(GL_POLYGON);
@@ -75,19 +75,33 @@ void drawMap(){
     drawCube(cube);
 }
 
+void renderCamera(Camera camera){
+    //Projection matrix mimics human vision.
+    glMatrixMode(GL_PROJECTION);    //next commands modify projection matrix
+    glLoadIdentity();               //Reset current matrix, undefined behaviour if not done
+    gluPerspective(                 //Creating projection matrix
+        camera.FOV,                 //FOV in degrees   
+        camera.aspectRatio,         //Aspect ratio -> width/height
+        camera.zNear,               //render no closer
+        camera.zFar                 //render no further
+    );
+
+    //ModelView matric controls positioning of 3D models and camera.
+    glMatrixMode(GL_MODELVIEW);         //Next commands modify ModelView matrix
+    glLoadIdentity();                   //Reset current matrix
+    Coordinates c = camera.coordinates;
+    glTranslatef(-c.x,-c.y,-c.z);       
+    printf("x: %f, y: %f, z: %f\n", c.x, c.y, c.z);
+}
+
 void render(HDC CLIENT_AREA_HANDLE, Game *game){
-    glEnable(GL_DEPTH_TEST);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glFlush();
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    Coordinates c = game->camera.coordinates;
-    glTranslatef(-c.x,-c.y,-c.z);
-
-    glTranslatef(0.0f,0.0f,0.0f);
+    
+    renderCamera(game->camera);
+    
     drawMap();
-
+    
     SwapBuffers(CLIENT_AREA_HANDLE);
 }
 
@@ -97,7 +111,8 @@ void setupGraphics(HDC CLIENT_AREA_HANDLE){
     SetPixelFormat(CLIENT_AREA_HANDLE, format, &pfd);
     HGLRC glrc = wglCreateContext(CLIENT_AREA_HANDLE);
     wglMakeCurrent(CLIENT_AREA_HANDLE, glrc);
-
+    
+    glEnable(GL_DEPTH_TEST);                            //Keep track of every pixel distance from camera
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
