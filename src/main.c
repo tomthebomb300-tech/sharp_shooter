@@ -21,6 +21,8 @@ void setupGame(){
     game->key_down[KEY_A] = 0;
     game->key_down[KEY_S] = 0;
     game->key_down[KEY_D] = 0;
+    game->key_down[KEY_UP] = 0;
+    game->key_down[KEY_DOWN] = 0;
 
     game->gameState = GAME_STATE_PLAYING;
 
@@ -42,6 +44,8 @@ void keyDown(WPARAM key){
     else if(key == 'A'){game->key_down[KEY_A] = 1;}
     else if(key == 'S'){game->key_down[KEY_S] = 1;}
     else if(key == 'D'){game->key_down[KEY_D] = 1;}
+    else if(key == VK_UP){game->key_down[KEY_UP] = 1;}
+    else if(key == VK_DOWN){game->key_down[KEY_DOWN] = 1;}
 }
 
 void keyUp(WPARAM key){
@@ -49,6 +53,8 @@ void keyUp(WPARAM key){
     else if(key == 'A'){game->key_down[KEY_A] = 0;}
     else if(key == 'S'){game->key_down[KEY_S] = 0;}
     else if(key == 'D'){game->key_down[KEY_D] = 0;}
+    else if(key == VK_UP){game->key_down[KEY_UP] = 0;}
+    else if(key == VK_DOWN){game->key_down[KEY_DOWN] = 0;}
 }
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam){

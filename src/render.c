@@ -95,8 +95,7 @@ void renderCamera(Camera camera){
 }
 
 void render(HDC CLIENT_AREA_HANDLE, Game *game){
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glFlush();
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //Clear colour buffer and depth buffer.
     
     renderCamera(game->camera);
     

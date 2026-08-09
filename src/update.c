@@ -16,6 +16,12 @@ void moveCamera(Game *game){
     if(game->key_down[KEY_D]){
         game->camera.coordinates.x += game->camera.speed;
     }
+    if(game->key_down[KEY_UP]){
+        game->camera.coordinates.y += game->camera.speed;
+    }
+    if(game->key_down[KEY_DOWN]){
+        game->camera.coordinates.y -= game->camera.speed;
+    }
 
 }
 

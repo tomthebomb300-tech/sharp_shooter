@@ -11,7 +11,9 @@ typedef enum key{
     KEY_W,
     KEY_A,
     KEY_S,
-    KEY_D
+    KEY_D,
+    KEY_UP,
+    KEY_DOWN,
 } KEY;
 
 typedef struct Coordinates{
@@ -50,7 +52,7 @@ typedef struct Camera{
 typedef struct Game{
     GAMESTATE gameState;
     Camera camera;
-    int key_down[4];
+    int key_down[6];
 }Game;
 
 #endif
