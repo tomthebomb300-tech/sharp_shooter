@@ -14,13 +14,20 @@ typedef enum key{
     KEY_D,
     KEY_UP,
     KEY_DOWN,
+    KEY_ESC,
+    KEY_LEFTCLICK
 } KEY;
 
-typedef struct Coordinates{
+typedef struct Coordinates3{
     float x;
     float y;
     float z;
-} Coordinates;
+} Coordinates3;
+
+typedef struct Coordinates2{
+    float x;
+    float y;
+} Coordinates2;
 
 typedef struct Dimensions{
     float width;
@@ -35,24 +42,29 @@ typedef struct Colour{
 } Colour;
 
 typedef struct Cube{
-    Coordinates coordinates;
+    Coordinates3 coordinates;
     Dimensions dimensions;
     Colour colour;
 } Cube;
 
 typedef struct Camera{
-    Coordinates coordinates;
+    Coordinates3 coordinates;
+    Coordinates3 viewingDirection;
+    float yaw;
+    float pitch;
     float FOV;
     float aspectRatio;
     float zNear;
     float zFar;
     float speed;
+    float sensitivity;
 } Camera;
 
 typedef struct Game{
     GAMESTATE gameState;
     Camera camera;
-    int key_down[6];
+    int key_down[8];
+    Coordinates2 mouseCoords;
 }Game;
 
 #endif

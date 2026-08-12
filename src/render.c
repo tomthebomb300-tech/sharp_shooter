@@ -7,7 +7,7 @@
 
 
 void drawCube(Cube cube){
-    Coordinates c = cube.coordinates;
+    Coordinates3 c = cube.coordinates;
     Dimensions d = cube.dimensions;
     Colour colour = cube.colour;
 
@@ -68,7 +68,7 @@ void drawCube(Cube cube){
 
 void drawMap(){
     Cube cube = {
-        .coordinates = (Coordinates){0.0f, 0.0f, 0.0f},
+        .coordinates = (Coordinates3){0.0f, 0.0f, 0.0f},
         .dimensions = (Dimensions){0.25f, 0.5f, 0.25f},
         .colour = (Colour){1.0f, 0.0f, 0.0f}
     };    
@@ -89,9 +89,13 @@ void renderCamera(Camera camera){
     //ModelView matric controls positioning of 3D models and camera.
     glMatrixMode(GL_MODELVIEW);         //Next commands modify ModelView matrix
     glLoadIdentity();                   //Reset current matrix
-    Coordinates c = camera.coordinates;
+
+    glRotatef(camera.pitch, 1.0f, 0.0f, 0.0f);
+    glRotatef(camera.yaw, 0.0f, 1.0f, 0.0f);
+
+    Coordinates3 c = camera.coordinates;
     glTranslatef(-c.x,-c.y,-c.z);       
-    printf("x: %f, y: %f, z: %f\n", c.x, c.y, c.z);
+    // printf("x: %f, y: %f, z: %f  -- P: %f, Y: %f\n", c.x, c.y, c.z, camera.pitch, camera.yaw);
 }
 
 void render(HDC CLIENT_AREA_HANDLE, Game *game){

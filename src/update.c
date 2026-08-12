@@ -1,9 +1,10 @@
 #include <stdio.h>
+#include <math.h>
 
 #include "update.h"
 #include "types.h"
 
-void moveCamera(Game *game){
+void moveCameraXYZ(Game *game){
     if(game->key_down[KEY_W]){
         game->camera.coordinates.z -= game->camera.speed;
     }
@@ -22,9 +23,15 @@ void moveCamera(Game *game){
     if(game->key_down[KEY_DOWN]){
         game->camera.coordinates.y -= game->camera.speed;
     }
+}
 
+void moveCameraPitchYaw(Game *game){
+    //getting current mouse coords * sensitivity and converting the value to radians.
+    game->camera.yaw = (game->mouseCoords.x * game->camera.sensitivity) * (3.14159265f / 180.0f);
+    game->camera.pitch = (game->mouseCoords.y * game->camera.sensitivity) * (3.14159265f / 180.0f);
 }
 
 void update(Game *game){
-    moveCamera(game);
+    moveCameraXYZ(game);
+    moveCameraPitchYaw(game);
 }

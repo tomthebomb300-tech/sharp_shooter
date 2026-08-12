@@ -3,7 +3,8 @@
 
 #include "types.h"
 
-void moveCamera(Game *game);
+void moveCameraXYZ(Game *game);
+void moveCameraPitchYaw(Game *game);
 void update(Game *game);
 
 #endif
