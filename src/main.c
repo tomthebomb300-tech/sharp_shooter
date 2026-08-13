@@ -57,7 +57,7 @@ void setupGame(){
         .zNear = 0.1f,
         .zFar = 100.0f,
         .speed = 0.0001f,
-        .sensitivity = 1.0f
+        .sensitivity = 10.0f
     };
     game->camera = camera;
 }
